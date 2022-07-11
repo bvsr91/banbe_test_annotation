@@ -1,0 +1,62 @@
+_schema-version: "3.1"
+ID: ibanbe
+description: A simple CAP project.
+version: 1.0.0
+modules:
+- name: ibanbe-srv
+  type: nodejs
+  path: gen/srv
+  requires:
+    - name: ibanbe-db-hdi-container
+    - name: uaa_ibanbe
+  provides:
+    - name: ibanbe-srv_api
+      properties:
+        url: ${default-url}
+  parameters:
+    buildpack: nodejs_buildpack
+  build-parameters:
+    builder: npm-ci
+- name: ibanbe-db-deployer
+  type: hdb
+  path: db
+  requires:
+  - name: ibanbe-db-hdi-container
+  parameters:
+    buildpack: nodejs_buildpack
+- name: ibanbe-approuter
+  type: approuter.nodejs
+  path: ibanbe-approuter
+  requires:
+  - name: uaa_ibanbe
+  - name: ibanbe-srv_api
+    group: destinations
+    properties:
+      name: srv_api
+      url: '~{url}'
+      forwardAuthToken: true
+  parameters:
+    disk-quota: 256M
+    memory: 256M
+resources:
+- name: ibanbe-db-hdi-container
+  type: com.sap.xs.hdi-container
+  parameters:
+    service: hana
+    service-plan: hdi-shared
+  properties:
+    hdi-service-name: ${service-name}
+- name: uaa_ibanbe
+  type: org.cloudfoundry.managed-service
+  parameters:
+    path: ./xs-security.json
+    service: xsuaa
+    service-name: ibanbe-xsuaa-service
+    service-plan: application
+parameters:
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+  - builder: custom
+    commands:
+    - npx -p @sap/cds-dk cds build --production

@@ -1,0 +1,13 @@
+{
+    "authenticationMethod": "route",
+    "routes": [
+        {
+            "source": "^/v2/IbanSrv/(.*)$",
+            "destination": "srv_api",
+            "authenticationType": "xsuaa",
+            "scope": [
+                "$XSAPPNAME.ibanInternal_sc"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,25 @@
+{
+    "xsappname": "ibanbe",
+    "tenant-mode": "dedicated",
+    "description": "Security profile of called application",
+    "scopes": [
+        {
+            "name": "uaa.user",
+            "description": "UAA"
+        },
+        {
+            "name": "$XSAPPNAME.ibanInternal_sc",
+            "description": "IBAN Internal User"
+        }
+    ],
+    "role-templates": [
+        {
+            "name": "ibanbe_internal",
+            "description": "IBAN Internal User",
+            "scope-references": [
+                "$XSAPPNAME.ibanInternal_sc",
+                "uaa.user"
+            ]
+        }
+    ]
+}
