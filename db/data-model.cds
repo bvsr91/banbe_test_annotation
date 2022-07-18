@@ -10,8 +10,8 @@ using {
 } from '@sap/cds/common';
 
 entity Request : managed {
-    key RequestUUID    : UUID;
-        RequestID      : Integer @readonly default 0;
+        // key RequestUUID    : UUID;
+    key RequestID      : Integer;
         VendorUser     : String;
         VendorCode     : String;
         VendorName     : String;
@@ -21,5 +21,29 @@ entity Request : managed {
         RequestType    : String;
         RiskScore      : String;
         SubmissionDate : Date;
-        Status         : String;
+        status         : Association to statusList;
+        linkToAttach   : Composition of Request_Attachments;
+}
+
+entity Request_Attachments {
+    key uuid     : UUID;
+        @Core.MediaType                   : fileType
+        @Core.ContentDisposition.Filename : fileName
+        content  : LargeBinary;
+        fileType : String @Core.IsMediaType;
+        fileName : String;
+}
+
+entity statusList : CodeList {
+        @UI.Hidden       : true
+        @UI.HiddenFilter : true
+    key code                    : String enum {
+            P = 'Pending';
+            A = 'Approved';
+            R = 'Rejected';
+            D = 'Deleted';
+        } default 'Pending'; //> will be used for foreign keys as well
+        criticality             : Integer; //  2: yellow colour,  3: green colour, 0: unknown
+        createDeleteHidden      : Boolean;
+        insertDeleteRestriction : Boolean; // = NOT createDeleteHidden
 }
