@@ -21,6 +21,7 @@ entity Request : managed {
         RequestType    : String;
         RiskScore      : String;
         SubmissionDate : Date;
+        approver       : String;
         status         : Association to statusList;
         linkToAttach   : Composition of Request_Attachments;
 }
@@ -47,3 +48,25 @@ entity statusList : CodeList {
         createDeleteHidden      : Boolean;
         insertDeleteRestriction : Boolean; // = NOT createDeleteHidden
 }
+
+entity Vendors {
+    key VendorCode : String;
+        VendorName : String;
+}
+
+
+entity User_Vendor {
+    key User      : String;
+    key VendoCode : String;
+}
+
+view User_Vendor_V as
+    select
+        a.User,
+        a.VendoCode,
+        b.VendorName
+    from User_Vendor as a
+    inner join Vendors as b
+        on a.VendoCode = b.VendorCode
+    where
+        a.User = $user;

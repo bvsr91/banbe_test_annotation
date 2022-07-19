@@ -47,3 +47,5 @@ mrobe/.env6
 Notifications/.env
 # auto generated wildcard
 ibanbe/.env1
+# auto generated wildcard
+ibanbe/.env
