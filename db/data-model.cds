@@ -22,14 +22,17 @@ entity Request : managed {
         RiskScore      : String;
         SubmissionDate : Date;
         approver       : String;
+        approvedDate   : DateTime;
         status         : Association to statusList;
         linkToAttach   : Composition of Request_Attachments;
 }
 
 entity Request_Attachments {
     key uuid     : UUID;
-        @Core.MediaType                   : fileType
-        @Core.ContentDisposition.Filename : fileName
+        @Core.MediaType               : fileType
+        // @Core.ContentDisposition.Filename : fileName
+        // @Core.ContentDisposition.Filename : fileName
+        @Core.ContentDisposition.Type : 'inline'
         content  : LargeBinary;
         fileType : String @Core.IsMediaType;
         fileName : String;
@@ -69,4 +72,4 @@ view User_Vendor_V as
     inner join Vendors as b
         on a.VendoCode = b.VendorCode
     where
-        a.User = $user;
+        a.User = upper($user);

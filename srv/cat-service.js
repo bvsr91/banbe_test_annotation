@@ -16,6 +16,13 @@ module.exports = async function () {
             req.reject(400, error);
         }
     });
+    this.before("UPDATE", "Request", async (req, next) => {
+        try {
+            req.data.approver = req.user.id;
+        } catch (error) {
+            req.reject(400, error);
+        }
+    });
     this.before("INSERT", "Request", async (req, next) => {
         try {
             const { maxID } = await SELECT.one`max(RequestID) as maxID`.from(Request);

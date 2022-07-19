@@ -2,8 +2,14 @@ using {ferrero.iban as iban} from '../db/data-model';
 
 // @requires : 'authenticated-user'
 service CatalogService @(impl : './cat-service.js') @(path : '/IbanSrv') {
-    @insertonly
-    entity Request            as projection on iban.Request;
+    // @insertonly  @updateonly
+    entity Request @(Capabilities : {
+        InsertRestrictions : {Insertable : true,
+                                                 // Permissions : [{Scopes : [{Scope : 'admin'}]}]
+                                           },
+        UpdateRestrictions : {Updatable : true},
+        ReadRestrictions   : {Readable : false}        
+    }, )                      as projection on iban.Request;
 
     entity RequestAttachments as projection on iban.Request_Attachments;
 
@@ -38,7 +44,32 @@ service CatalogService @(impl : './cat-service.js') @(path : '/IbanSrv') {
         inner join User_Vendor_V as b
             on a.VendorCode = b.VendoCode
         where
-            a.VendorCode = b.VendoCode;
+            a.VendorCode = b.VendoCode
+        order by
+            createdAt desc;
+
+    @readonly
+    view Request_A as
+        select
+            key RequestID,
+                VendorUser,
+                VendorCode,
+                VendorName,
+                AccountHolder,
+                IBAN,
+                BIC_SWIFT_Code,
+                RequestType,
+                SubmissionDate,
+                status,
+                approver,
+                approvedDate,
+                linkToAttach,
+                createdAt,
+                createdBy
+        from iban.Request
+        order by
+            createdAt desc;
+
 
     entity User_Vendor_V      as projection on iban.User_Vendor_V;
 }

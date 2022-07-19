@@ -12,10 +12,13 @@ annotate schema.Request {
     RiskScore      @title : '{i18n>RiskScore}';
     SubmissionDate @title : '{i18n>SubmissionDate}';
     status         @title : '{i18n>Status}';
+    approver       @title : '{i18n>approver}';
+    approvedDate   @title : '{i18n>approvedDate}';
 }
 
 annotate schema.Request_Attachments {
-    content  @title : '{i18n>cotent}';
+    content
+             @title : '{i18n>cotent}';
     fileType @title : '{i18n>fileType}';
     fileName @title : '{i18n>fileName}';
 }
