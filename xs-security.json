@@ -4,12 +4,12 @@
     "description": "Security profile of called application",
     "scopes": [
         {
-            "name": "uaa.user",
-            "description": "UAA"
-        },
-        {
             "name": "$XSAPPNAME.ibanInternal_sc",
             "description": "IBAN Internal User"
+        },
+        {
+            "name": "$XSAPPNAME.ibanExternal_sc",
+            "description": "IBAN External User"
         }
     ],
     "role-templates": [
@@ -18,6 +18,14 @@
             "description": "IBAN Internal User",
             "scope-references": [
                 "$XSAPPNAME.ibanInternal_sc",
+                "uaa.user"
+            ]
+        },
+        {
+            "name": "ibanbe_external",
+            "description": "IBAN External User",
+            "scope-references": [
+                "$XSAPPNAME.ibanExternal_sc",
                 "uaa.user"
             ]
         }

@@ -6,7 +6,8 @@
             "destination": "srv_api",
             "authenticationType": "xsuaa",
             "scope": [
-                "$XSAPPNAME.ibanInternal_sc"
+                "$XSAPPNAME.ibanInternal_sc",
+                "$XSAPPNAME.ibanExternal_sc"
             ]
         }
     ]

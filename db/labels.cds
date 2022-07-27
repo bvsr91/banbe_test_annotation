@@ -22,3 +22,7 @@ annotate schema.Request_Attachments {
     fileType @title : '{i18n>fileType}';
     fileName @title : '{i18n>fileName}';
 }
+
+annotate schema.User_Vendor {
+    displayName @title : '{i18n>displayName}';
+}

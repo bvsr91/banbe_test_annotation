@@ -119,7 +119,7 @@ annotate CatalogService.Request_U with @(UI : {
         },
         {
             $Type                 : 'UI.DataField',
-            Value                 : VendorUser,
+            Value                 : displayName,
             ![@HTML5.CssDefaults] : {width : '10rem'},
             ![@UI.Importance]     : #High
         },
@@ -200,7 +200,7 @@ annotate CatalogService.Request_A with @(UI : {
         },
         {
             $Type                 : 'UI.DataField',
-            Value                 : VendorUser,
+            Value                 : displayName,
             ![@HTML5.CssDefaults] : {width : '10rem'},
             ![@UI.Importance]     : #High
         },

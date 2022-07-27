@@ -24,18 +24,20 @@ entity Request : managed {
         approver       : String;
         approvedDate   : DateTime;
         status         : Association to statusList;
-        linkToAttach   : Composition of Request_Attachments;
+        linkToAttach   : Composition of many Request_Attachments
+                             on linkToAttach.p_request = $self;
 }
 
 entity Request_Attachments {
-    key uuid     : UUID;
+    key uuid      : UUID;
+        p_request : Association to Request;
         @Core.MediaType               : fileType
         // @Core.ContentDisposition.Filename : fileName
         // @Core.ContentDisposition.Filename : fileName
         @Core.ContentDisposition.Type : 'inline'
-        content  : LargeBinary;
-        fileType : String @Core.IsMediaType;
-        fileName : String;
+        content   : LargeBinary;
+        fileType  : String @Core.IsMediaType;
+        fileName  : String;
 }
 
 entity statusList : CodeList {
@@ -59,14 +61,16 @@ entity Vendors {
 
 
 entity User_Vendor {
-    key User      : String;
-    key VendoCode : String;
+    key User        : String;
+    key VendoCode   : String;
+        displayName : String;
 }
 
 view User_Vendor_V as
     select
         a.User,
         a.VendoCode,
+        a.displayName,
         b.VendorName
     from User_Vendor as a
     inner join Vendors as b
