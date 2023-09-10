@@ -100,6 +100,12 @@ annotate CatalogService.Request_U with @(UI : {
             ![@UI.Importance]     : #High
         },
         {
+            $Type                 : 'UI.DataField',
+            Value                 : CompanyCode_CoCd,
+            ![@HTML5.CssDefaults] : {width : '8rem'},
+            ![@UI.Importance]     : #High
+        },
+        {
             $Type             : 'UI.DataField',
             Value             : IBAN,
             ![@UI.Importance] : #High
@@ -148,7 +154,7 @@ annotate CatalogService.Request_U with @(UI : {
         {
             $Type                 : 'UI.DataField',
             Value                 : createdBy,
-            ![@HTML5.CssDefaults] : {width : '7rem'},
+            ![@HTML5.CssDefaults] : {width : '11rem'},
             ![@UI.Importance]     : #Low
         }
     ],
@@ -156,7 +162,8 @@ annotate CatalogService.Request_U with @(UI : {
         RequestID,
         RequestType,
         VendorCode,
-        status_code
+        status_code,
+        CompanyCode_CoCd
     ],
 });
 
@@ -178,6 +185,12 @@ annotate CatalogService.Request_A with @(UI : {
             $Type                 : 'UI.DataField',
             Value                 : RequestType,
             ![@HTML5.CssDefaults] : {width : '7rem'},
+            ![@UI.Importance]     : #High
+        },
+        {
+            $Type                 : 'UI.DataField',
+            Value                 : CompanyCode_CoCd,
+            ![@HTML5.CssDefaults] : {width : '8rem'},
             ![@UI.Importance]     : #High
         },
         {
@@ -230,19 +243,19 @@ annotate CatalogService.Request_A with @(UI : {
         {
             $Type                 : 'UI.DataField',
             Value                 : createdBy,
-            ![@HTML5.CssDefaults] : {width : '7rem'},
+            ![@HTML5.CssDefaults] : {width : '11rem'},
             ![@UI.Importance]     : #Low
         },
         {
             $Type                 : 'UI.DataField',
             Value                 : approver,
-            ![@HTML5.CssDefaults] : {width : '8rem'},
+            ![@HTML5.CssDefaults] : {width : '11rem'},
             ![@UI.Importance]     : #High
         },
         {
             $Type                 : 'UI.DataField',
             Value                 : approvedDate,
-            ![@HTML5.CssDefaults] : {width : '9rem'},
+            ![@HTML5.CssDefaults] : {width : '11rem'},
             ![@UI.Importance]     : #High
         }
     ],
@@ -250,6 +263,7 @@ annotate CatalogService.Request_A with @(UI : {
         RequestID,
         RequestType,
         VendorCode,
-        status_code
+        status_code,
+        CompanyCode_CoCd
     ],
 });
