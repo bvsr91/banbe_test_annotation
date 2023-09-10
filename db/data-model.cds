@@ -16,28 +16,33 @@ entity Request : managed {
         VendorCode     : String;
         VendorName     : String;
         AccountHolder  : String;
-        IBAN           : String;
-        BIC_SWIFT_Code : String;
+        CompanyCode    : Association to CompanyCodes @description : 'Company Code'
+                                                     @Common :      {Text : 'CompanyCodes.CompanyName'};
+        IBAN           : String(34);
+        BIC_SWIFT_Code : String(11);
         RequestType    : String;
         RiskScore      : String;
         SubmissionDate : Date;
         approver       : String;
         approvedDate   : DateTime;
+        redirect_uri   : String;
+        code           : String;
         status         : Association to statusList;
         linkToAttach   : Composition of many Request_Attachments
                              on linkToAttach.p_request = $self;
 }
 
-entity Request_Attachments {
-    key uuid      : UUID;
-        p_request : Association to Request;
+entity Request_Attachments : managed {
+    key uuid       : UUID;
+        p_request  : Association to Request;
         @Core.MediaType               : fileType
         // @Core.ContentDisposition.Filename : fileName
         // @Core.ContentDisposition.Filename : fileName
         @Core.ContentDisposition.Type : 'inline'
-        content   : LargeBinary;
-        fileType  : String @Core.IsMediaType;
-        fileName  : String;
+        content    : LargeBinary;
+        fileType   : String @Core.IsMediaType;
+        fileName   : String;
+        aprRejFlag : String(1);
 }
 
 entity statusList : CodeList {
@@ -61,9 +66,19 @@ entity Vendors {
 
 
 entity User_Vendor {
-    key User        : String;
-    key VendoCode   : String;
-        displayName : String;
+    key User             : String;
+    key VendoCode        : String;
+        displayName      : String;
+        user_mail        : String;
+        bindauth_allowed : Boolean;
+        bindClientID     : String @readonly;
+        isAliasEnabled   : Boolean;
+        isApprover       : Boolean;
+}
+
+entity CompanyCodes {
+    key CoCd        : String(4);
+        CompanyName : String;
 }
 
 view User_Vendor_V as
@@ -71,9 +86,16 @@ view User_Vendor_V as
         a.User,
         a.VendoCode,
         a.displayName,
-        b.VendorName
+        a.user_mail,
+        a.bindauth_allowed,
+        b.VendorName,
+        a.bindClientID,
+        a.isAliasEnabled,
+        a.isApprover
     from User_Vendor as a
     inner join Vendors as b
         on a.VendoCode = b.VendorCode
     where
-        a.User = upper($user);
+        lower(
+            a.User
+        ) = lower($user);
